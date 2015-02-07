@@ -1,4 +1,3 @@
-var pages = ['map', 'list', 'form', 'search'];
 var root = 'http://localhost:3000';
 var icon_url = 'http://www.google.com/mapmaker/mapfiles/marker-k.png';
 var selected_url = 'http://www.google.com/intl/en_us/mapfiles/ms/icons/blue-dot.png';
@@ -19,6 +18,7 @@ var getLocation = function() {
 		console.log(pos);
 		var lat = pos.coords.latitude;
 		var lng = pos.coords.longitude;
+		window.userpos = pos;
 		initMap(lat, lng);
 	}, function(err) {
 		console.log(err);
@@ -127,28 +127,86 @@ var getNearbyRoutes = function(stop) {
 }
 
 var listRoutes = function(routes) {
+	window.routes = routes;
+	$('.list ul li').off();
 	$('.list ul').empty();
 	for(var i = 0; i < routes.length; i++) {
 		var route = routes[i];
 		console.log(route)
-		$('.list ul').append('<li><strong>'+route.route_short_name+'</strong><p>'+route.route_long_name+'</p></li>')
+		$('.list ul').append('<li data-id="'+route.route_id+'"><strong>'+route.route_short_name+'</strong><p>'+route.route_long_name+'</p></li>')
 	}
+
+	$('.list ul li').on('click', function(){
+		var id = $(this).data('id');
+		changePage('.form');
+		populateRoutePage(id)
+	})
 }
 
-var changePage = function() {
 
+var changePage = function(set) {
+	$('.page').addClass('hidden');
+	$(set).removeClass('hidden');
 }
 
-var clearPage = function() {
+var getRoute = function(id) {
+	if(!window.routes) {
+		return;
+	}
 
+	var match = {};
+
+	for(var i = 0; i < window.routes.length; i++) {
+		if(window.routes[i].route_id === id) {
+			match = window.routes[i];
+		}
+	}
+	return match;
 }
 
-var changeHeader = function() {
-
+var populateRoutePage = function(id) {
+	var route = getRoute(id);
+	console.log(route);
+	changeHeader('< '+route.route_short_name + ' bus report');
+	$('.page.form p').text('The '+route.route_short_name + ' is');
+	$('.page form').attr('data-id', id);
 }
 
+
+var changeHeader = function(text) {
+	var header = text || 'Buster';
+	$('header').text(header);
+}
+
+var sendReport = function() {
+	var report = {
+		stop_id: window.closestStop.data.stop_id,
+		route_id: $('.page form').data('id'),
+		user_lat: window.userpos.coords.latitude,
+		user_lng: window.userpos.coords.longitude,
+		user_accuracy: window.userpos.coords.accuracy,
+		late: $('#late').is(':checked'),
+		full: $('#full').is(':checked'),
+		fingerprint: new Fingerprint({canvas: true}).get()
+	}
+	console.log(report);
+}
 
 $(document).ready(function(){
 	getLocation();
+
+	$('.page button').on('click', function(e){
+		sendReport();
+
+		e.preventDefault();
+		return false;
+	});
+
+	$('header').on('click', function(){
+		changeHeader();
+		$('.page').addClass('hidden');
+		$('.map').removeClass('hidden');
+		$('.list').removeClass('hidden');
+	});
 
 });

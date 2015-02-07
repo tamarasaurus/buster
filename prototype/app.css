@@ -29,6 +29,37 @@ body, html {
 	padding: 0;
 }
 
+.page.form {
+	text-align: center;
+}
+
+.page.form p,
+.page.form label,
+.page.form input{
+	text-align:center;
+	font-size: 35px;
+}
+
+.page.form input {
+	width: 40px;
+	height: 40px;
+}
+
+.page.form button {
+	height: 55px;
+	padding: 10px;
+	text-align:center;
+	font-size: 22px;
+	display: inline-block;
+	width: 100%;
+	margin-top: 40px;
+	background: #999;
+	color: #fff;
+	border:0;
+	box-shadow:none;
+	cursor: pointer;
+}
+
 .page ul {
 	float: left;
 	display: block;
@@ -49,6 +80,13 @@ body, html {
 	padding-bottom: 10px;
 	font-size: 12px;
 	position:relative;
+}
+
+.page ul li:hover,
+.page ul li:active,
+.page ul li:focus {
+	background: #f1f1f1;
+	cursor: pointer;
 }
 
 .page ul li:after {
@@ -81,6 +119,7 @@ header {
 	color: #fff;
 	padding: 10px;
 	line-height: 40px;
+	cursor: pointer;
 }
 
 header h1 {
