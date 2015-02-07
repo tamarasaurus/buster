@@ -1,0 +1,31 @@
+{
+  "name": "buster",
+  "version": "0.0.1",
+  "description": "Web application that logs late buses in Sydney",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tamarasaurus/buster.git"
+  },
+  "keywords": [
+    "gtfs",
+    "sydney",
+    "buses"
+  ],
+  "author": "Tamara Chahine",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tamarasaurus/buster/issues"
+  },
+  "homepage": "https://github.com/tamarasaurus/buster",
+  "dependencies": {
+    "gtfs": "^0.1.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.10",
+    "gulp-shell": "^0.2.11"
+  }
+}
