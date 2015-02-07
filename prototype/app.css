@@ -1,0 +1,95 @@
+div, div:before, div:after {
+	box-sizing: border-box;
+}
+
+body, html {
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	font-family: Helvetica, Arial, sans-serif;
+}
+
+.page {
+	width: 100%;
+	height: 100%;
+	padding: 20px;
+}
+
+.page h2 {
+	padding: 10px;
+	display: block;
+	float: left;
+}
+
+.page.hidden {
+	display: none;
+}
+
+.page.list {
+	padding: 0;
+}
+
+.page ul {
+	float: left;
+	display: block;
+	width: 100%;
+	list-style: none;
+	text-indent: 0;
+	margin:0;
+	padding:0;
+}
+
+.page ul li {
+	width: 100%;
+	border-top: 1px #ddd solid; 
+	padding:0;
+	margin:0;
+	padding-top: 10px;
+	padding-left: 10px;
+	padding-bottom: 10px;
+	font-size: 12px;
+	position:relative;
+}
+
+.page ul li:after {
+	content: '>';
+	font-weight: 700;
+	float: right;
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	font-size: 15px;
+	background: #000;
+	color: #fff;
+	padding: 5px;
+}
+
+.page ul li strong {
+	font-size: 14px;
+}
+
+.map {
+	width: 100%;
+	height: 300px;
+	display: block;
+	float: left;
+}
+
+header {
+	height: 40px;
+	background: #333;
+	color: #fff;
+	padding: 10px;
+	line-height: 40px;
+}
+
+header h1 {
+	display: inline-block;
+	padding: 0;
+	margin: 0;
+}
+
+header button {
+	float: right;
+	margin: 5px;
+}

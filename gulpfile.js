@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var shell = require('gulp-shell');
+var webserver = require('gulp-webserver');
 
 // Copy the config replacement for the gtfs module
 gulp.task('copy_config', function(){
@@ -23,3 +24,14 @@ gulp.task('start_gtfs', shell.task('node www', {
 }));
 
 // Start SailsJS app
+
+// Install Sails dependencies
+
+// Run prototype
+gulp.task('start_proto', function() {
+	gulp.src('./prototype')
+	  .pipe(webserver({
+	    livereload: true,
+	    directoryListing: false
+	  }));
+});
