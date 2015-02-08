@@ -118,7 +118,7 @@ var getNearbyRoutes = function(stop) {
 		type: 'GET',
 		dataType: 'json',
 		success: function(data) {
-			listRoutes(data);
+			listRoutes(data, stop.data.stop_id);
 		},
 		error: function(err) {
 			console.log(err);
@@ -126,21 +126,73 @@ var getNearbyRoutes = function(stop) {
 	});
 }
 
-var listRoutes = function(routes) {
+var getStopTimes = function(route_id, stop_id, cb) {
+	var url = root + '/api/times/sydneybuses/'+route_id+'/'+stop_id;
+	console.log(url);
+	$.ajax({
+		url: url,
+		// url: root + '/api/routesNearby/'+stop.data.stop_lat+'/'+stop.data.stop_lon+'/0',
+		type: 'GET',
+		dataType: 'json',
+		success: cb,
+		error: function(err) {
+			console.log(err);
+		}
+	});
+	// 
+}
+
+var makeRouteItem = function(route, times) {
+	var closeTimes = getCloseTimes(times);
+	var listitem = '<li data-id="'+route.route_id+'"><strong>'+route.route_short_name+'</strong><p>'+route.route_long_name+'</p><br>'+closeTimes+'</li>';
+	return listitem
+}
+
+var getCloseTimes = function(times) {
+	var currentTime = moment();
+	var closeTimes = [];
+
+	for(var i = 0; i < times.length; i++) {
+		var date = moment().format('YYYY-MM-DD');
+		var time = times[i];
+		var time_moment = moment(date + ' ' + time);
+		var time_diff = time_moment.diff(currentTime, 'minutes')
+		var time_diff_norm = Math.abs(time_diff);
+		if( time_diff_norm < 60) {
+			var style = (time_diff < 0 ? 'fade' : '');
+			if(time_diff_norm < 10) {
+				style = 'now'
+			}
+			closeTimes.push('<span class='+style+'>' + time + '</span>')
+		}
+	}
+	return closeTimes.join('');
+}
+
+var listRoutes = function(routes, stop) {
 	window.routes = routes;
 	$('.list ul li').off();
 	$('.list ul').empty();
+
 	for(var i = 0; i < routes.length; i++) {
 		var route = routes[i];
-		console.log(route)
-		$('.list ul').append('<li data-id="'+route.route_id+'"><strong>'+route.route_short_name+'</strong><p>'+route.route_long_name+'</p></li>')
+		getStopTimes(route.route_id, stop, function(times) {
+			var listitem = makeRouteItem(this.route, times);
+			$('.list ul').append(listitem);
+		}.bind({route: routes[i]}));
 	}
 
-	$('.list ul li').on('click', function(){
+	setListClicks();
+}
+
+
+var setListClicks = function() {
+	$(document).on('click', '.list ul li', function(){
+		console.log($(this));
 		var id = $(this).data('id');
 		changePage('.form');
 		populateRoutePage(id)
-	})
+	});	
 }
 
 
