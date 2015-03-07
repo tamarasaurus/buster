@@ -91,7 +91,7 @@ body, html {
 }
 
 .page ul li:after {
-	content: '❯';
+	content: '>';
 	font-weight: 700;
 	float: right;
 	position: absolute;

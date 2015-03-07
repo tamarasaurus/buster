@@ -238,9 +238,22 @@ var sendReport = function() {
 		user_lng: window.userpos.coords.longitude,
 		user_accuracy: window.userpos.coords.accuracy,
 		late: $('#late').is(':checked'),
-		full: $('#full').is(':checked'),
+		full: 2.5,
 		fingerprint: new Fingerprint({canvas: true}).get()
 	}
+
+	$.ajax({
+		type: 'POST',
+		data: report,
+		dataType: 'json',
+		success: function(res) {
+			console.log(res)
+		},
+		error: function(err) {
+			console.log(err);
+		}
+	})
+	// Send the report
 	console.log(report);
 }
 
