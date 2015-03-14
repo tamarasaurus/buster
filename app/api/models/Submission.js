@@ -22,6 +22,10 @@ module.exports = {
       type: 'text',
       required: true
     },
+    user_accuracy: {
+      type: 'integer',
+      required: false
+    },
     latitude: {
       type: 'float',
       required: true
@@ -31,6 +35,10 @@ module.exports = {
       required: true
     },
     route_id: {
+      type: 'string',
+      required: true
+    },
+    route_short_name: {
       type: 'string',
       required: true
     },
@@ -48,5 +56,8 @@ module.exports = {
     console.log(values);
     cb();
   }
+  
+
+
 };
 

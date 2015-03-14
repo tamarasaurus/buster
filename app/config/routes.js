@@ -34,7 +34,7 @@ module.exports.routes = {
 
   '/': {
     view: 'homepage'
-  }
+  },
 
   /***************************************************************************
   *                                                                          *
@@ -45,5 +45,17 @@ module.exports.routes = {
   * for configuration options and examples.                                  *
   *                                                                          *
   ***************************************************************************/
+
+  "post /submission/create": {
+     // controller: "SubmissionController",
+     // action: "create",
+     cors: true
+  },
+
+  "get /report/:route_id" : {
+    cors: true,
+    controller: 'ReportController',
+    action: 'getReport'
+  }
 
 };

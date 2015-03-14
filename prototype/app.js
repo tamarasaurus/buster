@@ -220,7 +220,7 @@ var populateRoutePage = function(id) {
 	var route = getRoute(id);
 	console.log(route);
 	changeHeader('< '+route.route_short_name + ' bus report');
-	$('.page.form p').text('The '+route.route_short_name + ' is');
+	$('.page.form p').html('The <div data-route="'+route.route_short_name + '">'+route.route_short_name+'</div> is');
 	$('.page form').attr('data-id', id);
 }
 
@@ -230,29 +230,44 @@ var changeHeader = function(text) {
 	$('header').text(header);
 }
 
+
+var showReport = function(res) {
+	changePage('.report');
+	changeHeader('< '+res.route_short_name + ' bus report');
+}
+
+var getReport = function(res) {
+	showReport(res);
+	console.log(res);
+}
+
 var sendReport = function() {
 	var report = {
 		stop_id: window.closestStop.data.stop_id,
 		route_id: $('.page form').data('id'),
-		user_lat: window.userpos.coords.latitude,
-		user_lng: window.userpos.coords.longitude,
+		route_short_name:  $('.page form [data-route]').data('route'),
+		latitude: window.userpos.coords.latitude,
+		longitude: window.userpos.coords.longitude,
 		user_accuracy: window.userpos.coords.accuracy,
 		late: $('#late').is(':checked'),
-		full: 2.5,
-		fingerprint: new Fingerprint({canvas: true}).get()
-	}
+		capacity: 2.5,
+		user_fingerprint: new Fingerprint({canvas: true}).get()
+	}	
 
 	$.ajax({
+		url: 'http://localhost:1337/submission/create',
 		type: 'POST',
 		data: report,
 		dataType: 'json',
 		success: function(res) {
-			console.log(res)
+			// console.log('success', res);
+			getReport(res);
 		},
 		error: function(err) {
-			console.log(err);
+			console.log('err', jQuery.parseJSON(err.responseText));
 		}
-	})
+	});
+
 	// Send the report
 	console.log(report);
 }
